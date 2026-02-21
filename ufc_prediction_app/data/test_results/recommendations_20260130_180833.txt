@@ -1,0 +1,46 @@
+======================================================================
+FIGHT SIMULATION MODEL - IMPROVEMENT RECOMMENDATIONS
+Generated: 2026-01-30 18:08:33
+======================================================================
+
+SUMMARY STATISTICS
+----------------------------------------
+Total fights tested: 195
+Winner accuracy: 65.1%
+Method accuracy: 45.1%
+Both correct: 31.8%
+
+RECOMMENDATIONS
+----------------------------------------
+
+1. KO/TKO prediction accuracy (42.3%) is low. Consider increasing the weight of power_puncher tendency and chin_issues vulnerability.
+
+2. Submission prediction accuracy (14.6%) is low. Submissions are inherently unpredictable, but consider boosting submission_hunter tendency weight.
+
+3. Rematch predictions (59.1%) underperform overall accuracy. Head-to-head history factor may need adjustment.
+
+4. Underperforming weight classes: Lightweight (54.2%), Middleweight (52.9%), Women's Bantamweight (46.2%), Catch Weight (50.0%). Consider weight-class-specific adjustments.
+
+5. Best performing model: ensemble (68.7%). Consider weighting this model more heavily in ensemble.
+
+======================================================================
+DETAILED BREAKDOWNS
+======================================================================
+
+BY METHOD:
+  KO/TKO: 78 fights, winner acc: 70.5%, method acc: 42.3%
+  Decision: 69 fights, winner acc: 68.1%, method acc: 69.6%
+  Submission: 48 fights, winner acc: 52.1%, method acc: 14.6%
+
+BY CONFIDENCE LEVEL:
+  low (50-60%): 13 fights, actual acc: 38.5%
+  medium (60-70%): 62 fights, actual acc: 53.2%
+  high (70-80%): 68 fights, actual acc: 70.6%
+  very_high (80%+): 52 fights, actual acc: 78.8%
+
+BY MODEL:
+  statistical: 63.6% (195 predictions)
+  ensemble: 68.7% (195 predictions)
+  stylistic: 59.5% (195 predictions)
+  momentum: 61.5% (195 predictions)
+  historical: 68.2% (195 predictions)

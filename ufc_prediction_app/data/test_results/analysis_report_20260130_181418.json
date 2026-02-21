@@ -1,0 +1,146 @@
+{
+  "summary": {
+    "total_fights_tested": 200,
+    "errors": 0,
+    "winner_accuracy": 0.685,
+    "method_accuracy": 0.53,
+    "both_correct_accuracy": 0.4,
+    "winner_correct_count": 137,
+    "method_correct_count": 106
+  },
+  "method_breakdown": {
+    "KO/TKO": {
+      "total": 82,
+      "winner_accuracy": 0.7439024390243902,
+      "method_accuracy": 0.6341463414634146
+    },
+    "Decision": {
+      "total": 77,
+      "winner_accuracy": 0.6233766233766234,
+      "method_accuracy": 0.44155844155844154
+    },
+    "Submission": {
+      "total": 41,
+      "winner_accuracy": 0.6829268292682927,
+      "method_accuracy": 0.4878048780487805
+    }
+  },
+  "weight_class_breakdown": {
+    "Lightweight": {
+      "total": 28,
+      "accuracy": 0.7857142857142857
+    },
+    "Welterweight": {
+      "total": 21,
+      "accuracy": 0.7142857142857143
+    },
+    "Middleweight": {
+      "total": 22,
+      "accuracy": 0.5909090909090909
+    },
+    "Featherweight": {
+      "total": 22,
+      "accuracy": 0.6363636363636364
+    },
+    "Bantamweight": {
+      "total": 14,
+      "accuracy": 0.7142857142857143
+    },
+    "Light Heavyweight": {
+      "total": 12,
+      "accuracy": 0.8333333333333334
+    },
+    "Heavyweight": {
+      "total": 23,
+      "accuracy": 0.782608695652174
+    },
+    "Flyweight": {
+      "total": 12,
+      "accuracy": 0.6666666666666666
+    },
+    "Women's Strawweight": {
+      "total": 12,
+      "accuracy": 0.5833333333333334
+    },
+    "Women's Flyweight": {
+      "total": 12,
+      "accuracy": 0.5833333333333334
+    },
+    "Women's Bantamweight": {
+      "total": 10,
+      "accuracy": 0.6
+    },
+    "Catch Weight": {
+      "total": 6,
+      "accuracy": 0.6666666666666666
+    },
+    "Women's Featherweight": {
+      "total": 6,
+      "accuracy": 0.5
+    }
+  },
+  "confidence_calibration": {
+    "low (50-60%)": {
+      "total": 68,
+      "correct": 37,
+      "accuracy": 0.5441176470588235
+    },
+    "medium (60-70%)": {
+      "total": 46,
+      "correct": 35,
+      "accuracy": 0.7608695652173914
+    },
+    "high (70-80%)": {
+      "total": 62,
+      "correct": 45,
+      "accuracy": 0.7258064516129032
+    },
+    "very_high (80%+)": {
+      "total": 14,
+      "correct": 13,
+      "accuracy": 0.9285714285714286
+    }
+  },
+  "rematch_analysis": {
+    "total": 25,
+    "correct": 17,
+    "accuracy": 0.68
+  },
+  "title_fight_analysis": {
+    "total": 71,
+    "correct": 46,
+    "accuracy": 0.647887323943662
+  },
+  "model_performance": {
+    "ensemble": {
+      "total": 200,
+      "accuracy": 0.66
+    },
+    "historical": {
+      "total": 200,
+      "accuracy": 0.66
+    },
+    "momentum": {
+      "total": 200,
+      "accuracy": 0.63
+    },
+    "statistical": {
+      "total": 200,
+      "accuracy": 0.705
+    },
+    "stylistic": {
+      "total": 200,
+      "accuracy": 0.665
+    }
+  },
+  "upset_analysis": {
+    "total_upsets": 63,
+    "upset_rate": 0.315,
+    "upsets_by_method": {
+      "Submission": 13,
+      "Decision": 29,
+      "KO/TKO": 21
+    }
+  },
+  "timestamp": "2026-01-30T18:14:19.010172"
+}

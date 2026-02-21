@@ -1,0 +1,22 @@
+# =============================================================================
+# UFC PREDICTION APP - Streamlit Configuration
+# =============================================================================
+
+[theme]
+primaryColor = "#D20A0A"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#1A1A2E"
+textColor = "#FFFFFF"
+font = "sans serif"
+
+[server]
+headless = true
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+
+[runner]
+magicEnabled = true
+fastReruns = true

@@ -1,0 +1,44 @@
+======================================================================
+FIGHT SIMULATION MODEL - IMPROVEMENT RECOMMENDATIONS
+Generated: 2026-01-30 18:14:19
+======================================================================
+
+SUMMARY STATISTICS
+----------------------------------------
+Total fights tested: 200
+Winner accuracy: 68.5%
+Method accuracy: 53.0%
+Both correct: 40.0%
+
+RECOMMENDATIONS
+----------------------------------------
+
+1. Decision fights have lower prediction accuracy than average. Consider improving the round-by-round scoring simulation.
+
+2. Rematch predictions (68.0%) underperform overall accuracy. Head-to-head history factor may need adjustment.
+
+3. Underperforming weight classes: Women's Strawweight (58.3%), Women's Flyweight (58.3%), Women's Featherweight (50.0%). Consider weight-class-specific adjustments.
+
+4. Best performing model: statistical (70.5%). Consider weighting this model more heavily in ensemble.
+
+======================================================================
+DETAILED BREAKDOWNS
+======================================================================
+
+BY METHOD:
+  KO/TKO: 82 fights, winner acc: 74.4%, method acc: 63.4%
+  Decision: 77 fights, winner acc: 62.3%, method acc: 44.2%
+  Submission: 41 fights, winner acc: 68.3%, method acc: 48.8%
+
+BY CONFIDENCE LEVEL:
+  low (50-60%): 68 fights, actual acc: 54.4%
+  medium (60-70%): 46 fights, actual acc: 76.1%
+  high (70-80%): 62 fights, actual acc: 72.6%
+  very_high (80%+): 14 fights, actual acc: 92.9%
+
+BY MODEL:
+  ensemble: 66.0% (200 predictions)
+  historical: 66.0% (200 predictions)
+  momentum: 63.0% (200 predictions)
+  statistical: 70.5% (200 predictions)
+  stylistic: 66.5% (200 predictions)

@@ -1,0 +1,216 @@
+name: UFC Data Update
+
+on:
+  # Scheduled updates - UFC events happen on Saturdays and sometimes Wednesdays
+  schedule:
+    # Sunday 6 AM UTC - after Saturday night main events (US prime time)
+    - cron: '0 6 * * 0'
+    # Sunday 2 PM UTC - catch any late results from Saturday events
+    - cron: '0 14 * * 0'
+    # Thursday 6 AM UTC - after Wednesday Fight Nights
+    - cron: '0 6 * * 4'
+    # Daily check at 7 AM UTC - lightweight check for any new events/results
+    - cron: '0 7 * * *'
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: 'Force model retraining'
+        required: false
+        default: false
+        type: boolean
+      update_type:
+        description: 'Update type'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - data_only
+          - predictions_only
+      validate_data:
+        description: 'Run data quality validation'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Git LFS
+        run: |
+          git lfs install
+          git lfs pull
+
+      - name: Initialize database if needed
+        run: |
+          if [ ! -f "data/database/ufc_database.db" ]; then
+            python scripts/init_database.py
+          fi
+
+      - name: Check for new completed events
+        id: check_events
+        run: |
+          python scripts/check_new_events.py
+          echo "new_events=$(cat .new_events_flag)" >> $GITHUB_OUTPUT
+
+      - name: Run data update
+        if: steps.check_events.outputs.new_events == 'true' || github.event.inputs.update_type == 'full'
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          UPDATE_TYPE="${{ github.event.inputs.update_type || 'full' }}"
+
+          if [ "$UPDATE_TYPE" = "data_only" ]; then
+            python scripts/manual_update.py --data-only --verbose
+          elif [ "$UPDATE_TYPE" = "predictions_only" ]; then
+            python scripts/manual_update.py --predictions-only --verbose
+          else
+            python scripts/manual_update.py --verbose
+          fi
+
+      - name: Update prediction accuracy
+        if: steps.check_events.outputs.new_events == 'true'
+        run: |
+          python -c "
+          from services.accuracy_service import AccuracyService
+          service = AccuracyService()
+          updated = service.update_completed_predictions()
+          print(f'Updated accuracy for {updated} predictions')
+
+          # Get validation stats
+          stats = service.get_validation_statistics()
+          print(f'Valid predictions: {stats[\"valid_for_accuracy\"]} / {stats[\"total_predictions\"]}')
+
+          # Get edge case stats
+          edge = service.get_edge_case_statistics()
+          print(f'Edge cases: {edge[\"total_edge_cases\"]}')
+          "
+
+      - name: Validate data quality
+        if: github.event.inputs.validate_data != 'false'
+        continue-on-error: true
+        run: |
+          python -c "
+          from services.scraper_service import UFCStatsScraper
+          from services.data_service import DataService
+
+          scraper = UFCStatsScraper()
+          data_service = DataService()
+
+          # Get recent events and validate
+          recent = data_service.get_completed_events(limit=5)
+          print('Data Quality Report:')
+          print('=' * 50)
+
+          for event in recent:
+              event_url = event.get('ufc_stats_url')
+              if event_url:
+                  event_data, validation = scraper.scrape_and_validate_event(event_url)
+                  status = 'OK' if validation['is_valid'] else 'ISSUES'
+                  print(f'{event[\"name\"]}: {status}')
+                  if validation.get('warnings'):
+                      for w in validation['warnings'][:3]:
+                          print(f'  Warning: {w}')
+          "
+
+      - name: Check if retraining needed
+        id: check_retrain
+        if: steps.check_events.outputs.new_events == 'true'
+        run: |
+          python scripts/check_retrain_needed.py
+          echo "needs_retrain=$(cat .retrain_flag)" >> $GITHUB_OUTPUT
+
+      - name: Retrain models (if needed)
+        if: steps.check_retrain.outputs.needs_retrain == 'true' || github.event.inputs.force_retrain == 'true'
+        env:
+          MLFLOW_TRACKING_URI: ${{ github.workspace }}/mlruns
+          MLFLOW_EXPERIMENT_NAME: ufc-prediction-models
+        run: |
+          python scripts/manual_update.py --force-retrain --verbose
+          python scripts/cleanup_models.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Add data and model files
+          git add data/database/ufc_database.db || true
+          git add models/trained/ || true
+          git add data/processed/ || true
+          git add data/cache/ || true
+          git add mlruns/ || true
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update: $(date +'%Y-%m-%d %H:%M')"
+            git push
+          fi
+
+      - name: Generate update summary
+        if: always()
+        run: |
+          echo "## UFC Data Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date**: $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **New Events**: ${{ steps.check_events.outputs.new_events }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Retrain Needed**: ${{ steps.check_retrain.outputs.needs_retrain || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Force Retrain**: ${{ github.event.inputs.force_retrain || 'false' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Generate accuracy metrics
+          python -c "
+          from services.accuracy_service import AccuracyService
+          service = AccuracyService()
+          summary = service.get_accuracy_summary()
+
+          print('### Model Accuracy')
+          print(f'- Rolling 30: {summary[\"rolling_30\"]*100:.1f}%')
+          print(f'- Rolling 100: {summary[\"rolling_100\"]*100:.1f}%')
+          print(f'- Needs Retraining: {summary[\"needs_retraining\"]}')
+
+          val_stats = summary.get('validation_stats', {})
+          if val_stats.get('total_predictions', 0) > 0:
+              print('')
+              print('### Data Quality')
+              print(f'- Valid Predictions: {val_stats[\"valid_for_accuracy\"]} / {val_stats[\"total_predictions\"]}')
+              print(f'- Avg Hours Before Fight: {val_stats[\"avg_hours_before_fight\"]:.1f}')
+
+          edge_stats = summary.get('edge_case_stats', {})
+          if edge_stats.get('total_edge_cases', 0) > 0:
+              print(f'- Edge Cases (NC/Draw/DQ): {edge_stats[\"total_edge_cases\"]}')
+          " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Could not generate accuracy metrics" >> $GITHUB_STEP_SUMMARY
+
+  notify-on-failure:
+    runs-on: ubuntu-latest
+    needs: update-data
+    if: failure()
+    steps:
+      - name: Log failure
+        run: |
+          echo "Data update failed at $(date)"
+          echo "Check the workflow logs for details."

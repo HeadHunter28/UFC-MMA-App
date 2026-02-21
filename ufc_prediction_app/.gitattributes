@@ -1,0 +1,25 @@
+# =============================================================================
+# UFC PREDICTION APP - Git LFS Configuration
+# =============================================================================
+
+# Database files
+data/database/*.db filter=lfs diff=lfs merge=lfs -text
+
+# Model files
+models/trained/versions/*.pkl filter=lfs diff=lfs merge=lfs -text
+models/trained/versions/*.joblib filter=lfs diff=lfs merge=lfs -text
+models/trained/current/*.pkl filter=lfs diff=lfs merge=lfs -text
+models/trained/current/*.joblib filter=lfs diff=lfs merge=lfs -text
+
+# Large data files
+data/raw/**/*.csv filter=lfs diff=lfs merge=lfs -text
+data/processed/*.csv filter=lfs diff=lfs merge=lfs -text
+
+# Ensure text files have consistent line endings
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.toml text eol=lf

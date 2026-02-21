@@ -1,0 +1,98 @@
+# =============================================================================
+# UFC PREDICTION APP - Git Ignore Configuration
+# =============================================================================
+
+# === ENVIRONMENT ===
+.env
+.env.local
+.env.*.local
+
+# === PYTHON ===
+*.py[cod]
+*$py.class
+__pycache__/
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# === VIRTUAL ENVIRONMENTS ===
+.venv/
+venv/
+ENV/
+env/
+.env/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# === LOGS ===
+logs/
+*.log
+
+# === CACHE ===
+data/cache/
+.streamlit/secrets.toml
+.cache/
+*.cache
+
+# === JUPYTER ===
+.ipynb_checkpoints/
+
+# === TESTING ===
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# === TYPE CHECKING ===
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# === OS ===
+.DS_Store
+Thumbs.db
+*.bak
+
+# =============================================================================
+# LOCAL DEVELOPMENT - Large Files
+# Comment these out for production deployment with Git LFS
+# =============================================================================
+
+# Database (uncomment for local dev)
+# data/database/*.db
+
+# Models (uncomment for local dev)
+# models/trained/versions/*.pkl
+# models/trained/versions/*.joblib
+
+# Raw data (uncomment for local dev)
+# data/raw/
+
+# Processed data (uncomment for local dev)
+# data/processed/
+
+# MLFlow runs (uncomment for local dev if not using remote tracking)
+# mlruns/

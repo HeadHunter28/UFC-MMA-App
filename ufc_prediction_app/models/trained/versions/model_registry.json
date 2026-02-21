@@ -1,0 +1,136 @@
+{
+  "registry_version": "1.0",
+  "max_versions_kept": 3,
+  "models": {
+    "winner": {
+      "current_version": "v0.0.5",
+      "versions": [
+        {
+          "version": "v0.0.5",
+          "filename": "winner_v0.0.5.pkl",
+          "created_at": "2026-02-12T13:41:41.380243",
+          "training_samples": 0,
+          "metrics": {
+            "accuracy": 0.7420269312544295,
+            "precision": 0.8141025641025641,
+            "recall": 0.8466666666666667,
+            "f1": 0.8300653594771242,
+            "auc_roc": 0.7276480675372643
+          },
+          "status": "active"
+        },
+        {
+          "version": "v0.0.4",
+          "filename": "winner_v0.0.4.pkl",
+          "created_at": "2026-01-29T20:20:29.082747",
+          "training_samples": 0,
+          "metrics": {
+            "accuracy": 0.7420269312544295,
+            "precision": 0.8317214700193424,
+            "recall": 0.819047619047619,
+            "f1": 0.8253358925143954,
+            "auc_roc": 0.7430180714945257
+          },
+          "status": "active"
+        },
+        {
+          "version": "v0.0.3",
+          "filename": "winner_v0.0.3.pkl",
+          "created_at": "2026-01-29T18:24:27.376309",
+          "training_samples": 0,
+          "metrics": {
+            "accuracy": 0.7565084226646248,
+            "precision": 0.7902010050251256,
+            "recall": 0.8064102564102564,
+            "f1": 0.7982233502538071,
+            "auc_roc": 0.8417702544603685
+          },
+          "status": "active"
+        }
+      ]
+    },
+    "method": {
+      "current_version": "v0.0.5",
+      "versions": [
+        {
+          "version": "v0.0.5",
+          "filename": "method_v0.0.5.pkl",
+          "created_at": "2026-02-12T13:41:41.380255",
+          "training_samples": 0,
+          "metrics": {
+            "accuracy": 0.5102763997165131,
+            "precision": 0.3480554971620769,
+            "recall": 0.35354978354978356,
+            "f1": 0.27245181177493827
+          },
+          "status": "active"
+        },
+        {
+          "version": "v0.0.4",
+          "filename": "method_v0.0.4.pkl",
+          "created_at": "2026-01-29T20:20:29.082754",
+          "training_samples": 0,
+          "metrics": {
+            "accuracy": 0.5109851169383416,
+            "precision": 0.3532221718251654,
+            "recall": 0.3540259740259741,
+            "f1": 0.2727547950152238
+          },
+          "status": "active"
+        },
+        {
+          "version": "v0.0.3",
+          "filename": "method_v0.0.3.pkl",
+          "created_at": "2026-01-29T18:24:27.376322",
+          "training_samples": 0,
+          "metrics": {
+            "accuracy": 0.5160796324655437,
+            "precision": 0.36230281586318736,
+            "recall": 0.3390523738417372,
+            "f1": 0.23950709237466275
+          },
+          "status": "active"
+        }
+      ]
+    },
+    "round": {
+      "current_version": "v0.0.5",
+      "versions": [
+        {
+          "version": "v0.0.5",
+          "filename": "round_v0.0.5.pkl",
+          "created_at": "2026-02-12T13:41:41.380260",
+          "training_samples": 0,
+          "metrics": {
+            "mae": 0.8185118984896613,
+            "within_one_round": 0.6867469879518072
+          },
+          "status": "active"
+        },
+        {
+          "version": "v0.0.4",
+          "filename": "round_v0.0.4.pkl",
+          "created_at": "2026-01-29T20:20:29.082756",
+          "training_samples": 0,
+          "metrics": {
+            "mae": 0.8182573928799136,
+            "within_one_round": 0.6867469879518072
+          },
+          "status": "active"
+        },
+        {
+          "version": "v0.0.3",
+          "filename": "round_v0.0.3.pkl",
+          "created_at": "2026-01-29T18:24:27.376325",
+          "training_samples": 0,
+          "metrics": {
+            "mae": 0.8210339828441959,
+            "within_one_round": 0.6967840735068913
+          },
+          "status": "active"
+        }
+      ]
+    }
+  },
+  "current_version": "v0.0.5"
+}
